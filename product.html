@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>product page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='product.css'>
+    <script src='product.js'></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">⚡ ElectroMart</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="aboutas.html">About Us</a></li>
+                <li><a href="registration.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="product-view.html">Product Detail</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+
+            </ul>
+    </header>
+    <div class="right-box">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for products, brands and more...">
+        </div>
+        <div class="icons">
+            <button class="icon-btn" title="Wishlist">❤️</button>
+            <button class="icon-btn" title="Cart">🛒</button>
+
+        </div>
+    </div>
+    </header>
+
+    <!-- Category Navigation -->
+    <nav class="category-nav">
+        <div class="category-nav-content">
+            <button class="category-btn active" onclick="filterCategory('all')">All Products</button>
+            <button class="category-btn" onclick="filterCategory('fan')">🌀 Fans</button>
+            <button class="category-btn" onclick="filterCategory('geyser')">🔥 Geysers</button>
+            <button class="category-btn" onclick="filterCategory('ac')">❄️ Air Conditioners</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Banner -->
+        <div class="banner">
+            <h1>🎉 Mega Electronics Sale!</h1>
+            <p>Up to 60% off on Fans, Geysers & Air Conditioners</p>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Filters Sidebar -->
+            <aside class="filters">
+                <div class="filter-header">
+                    <h3>🔍 Filters</h3>
+                    <button class="clear-filters" onclick="clearFilters()">Clear All</button>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Category</h4>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-fan" onchange="applyFilters()">
+                        <label for="cat-fan">Fans</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-geyser" onchange="applyFilters()">
+                        <label for="cat-geyser">Geysers</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cat-ac" onchange="applyFilters()">
+                        <label for="cat-ac">Air Conditioners</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Brand</h4>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-havells" onchange="applyFilters()">
+                        <label for="brand-havells">Havells</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-bajaj" onchange="applyFilters()">
+                        <label for="brand-bajaj">Bajaj</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-orient" onchange="applyFilters()">
+                        <label for="brand-orient">Orient</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-voltas" onchange="applyFilters()">
+                        <label for="brand-voltas">Voltas</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="brand-lg" onchange="applyFilters()">
+                        <label for="brand-lg">LG</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price-1" onchange="applyFilters()">
+                        <label for="price-1">Under ₹5,000</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price-2" onchange="applyFilters()">
+                        <label for="price-2">₹5,000 - ₹10,000</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price-3" onchange="applyFilters()">
+                        <label for="price-3">₹10,000 - ₹30,000</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="price-4" onchange="applyFilters()">
+                        <label for="price-4">Above ₹30,000</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Star Rating</h4>
+                    <div class="filter-option">
+                        <input type="checkbox" id="star-5" onchange="applyFilters()">
+                        <label for="star-5">⭐⭐⭐⭐⭐ 5 Star</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="star-4" onchange="applyFilters()">
+                        <label for="star-4">⭐⭐⭐⭐ 4 Star & Above</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="star-3" onchange="applyFilters()">
+                        <label for="star-3">⭐⭐⭐ 3 Star & Above</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Discount</h4>
+                    <div class="filter-option">
+                        <input type="checkbox" id="discount-1" onchange="applyFilters()">
+                        <label for="discount-1">50% or more</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="discount-2" onchange="applyFilters()">
+                        <label for="discount-2">40% or more</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="discount-3" onchange="applyFilters()">
+                        <label for="discount-3">30% or more</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="discount-4" onchange="applyFilters()">
+                        <label for="discount-4">20% or more</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Products Section -->
+            <main class="products-section">
+                <div class="products-header">
+                    <div class="products-count">
+                        Showing <strong><span id="product-count">18</span></strong> products
+                    </div>
+                    <div class="sort-dropdown">
+                        <span>Sort by:</span>
+                        <select id="sort-select" onchange="sortProducts()">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="discount">Discount</option>
+                            <option value="new">New Arrivals</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-checkout" onclick="openCheckout()">🛒 Checkout</button>
+                </div>
+
+                <div class="product-grid" id="product-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialize products on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            renderProducts(filteredProducts);
+            updateCartCount();
+            updateWishlistCount();
+        });
+    </script>
+</body>
+
+</html>
