@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Login Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='login.css'>
+    <script src='login.js'></script>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>Electromart</span>
+            </div>
+            <h2>Welcome Back!</h2>
+            <p>Your one-stop shop for all electrical appliances and electronics</p>
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>Wide range of electrical products</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>Best prices guaranteed</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>Fast & secure delivery</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>24/7 customer support</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-header">
+                <h3>Login to Your Account</h3>
+                <p>Enter your credentials to access your account</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="loginForm" action="login.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <span class="input-icon">📧</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <span class="input-icon" id="togglePassword">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="registration.html" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Login
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account? <a href="registration.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
