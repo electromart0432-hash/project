@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #86efac;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+        .status.loading {
+            background: #e0f2fe;
+            color: #0284c7;
+            border: 1px solid #bae6fd;
+        }
+        h2 {
+            color: #1a2a6c;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>⚡ ElectroMart Admin Panel - Test Status</h1>
+    
+    <h2>System Status</h2>
+    <div id="dbStatus" class="status loading">🔄 Checking database connection...</div>
+    <div id="ordersStatus" class="status loading">🔄 Checking orders data...</div>
+    <div id="usersStatus" class="status loading">🔄 Checking users data...</div>
+    <div id="productsStatus" class="status loading">🔄 Checking products data...</div>
+    
+    <h2>Quick Links</h2>
+    <ul>
+        <li><a href="admin.html">📊 Go to Admin Panel</a></li>
+        <li><a href="index.html">🏠 Go to Home Page</a></li>
+    </ul>
+    
+    <h2>Test Results</h2>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPIs() {
+            try {
+                // Test database status
+                const statusRes = await fetch('api_status.php');
+                const statusData = await statusRes.json();
+                
+                const dbDiv = document.getElementById('dbStatus');
+                if (statusData.success) {
+                    dbDiv.className = 'status success';
+                    dbDiv.innerHTML = `✅ Database connected: <code>${statusData.database}</code>`;
+                } else {
+                    throw new Error(statusData.error || 'Connection failed');
+                }
+                
+                // Test orders
+                const ordersRes = await fetch('api_orders.php?action=stats');
+                const ordersData = await ordersRes.json();
+                
+                const ordersDiv = document.getElementById('ordersStatus');
+                if (ordersData.success) {
+                    ordersDiv.className = 'status success';
+                    ordersDiv.innerHTML = `✅ Orders Table: <code>${ordersData.order_count}</code> records, Revenue: <code>₹${ordersData.total_revenue}</code>`;
+                } else {
+                    throw new Error('Orders API failed');
+                }
+                
+                // Test users
+                const usersRes = await fetch('api_users.php?action=stats');
+                const usersData = await usersRes.json();
+                
+                const usersDiv = document.getElementById('usersStatus');
+                if (usersData.success) {
+                    usersDiv.className = 'status success';
+                    usersDiv.innerHTML = `✅ Users Table: <code>${usersData.user_count}</code> records`;
+                } else {
+                    throw new Error('Users API failed');
+                }
+                
+                // Test products
+                const productsRes = await fetch('api_products.php?action=stats');
+                const productsData = await productsRes.json();
+                
+                const productsDiv = document.getElementById('productsStatus');
+                if (productsData.success) {
+                    productsDiv.className = 'status success';
+                    productsDiv.innerHTML = `✅ Products Table: <code>${productsData.product_count}</code> records`;
+                } else {
+                    throw new Error('Products API failed');
+                }
+                
+                document.getElementById('results').innerHTML = `
+                    <div class="status success">
+                        <strong>✅ All Systems Operational!</strong><br>
+                        <br>
+                        <strong>Admin Credentials:</strong><br>
+                        Username: <code>admin</code><br>
+                        Password: <code>admin123</code><br>
+                        <br>
+                        <strong>Database Summary:</strong><br>
+                        • Orders: ${ordersData.order_count} records<br>
+                        • Users: ${usersData.user_count} records<br>
+                        • Products: ${productsData.product_count} records<br>
+                        • Total Revenue: ₹${ordersData.total_revenue}
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <div class="status error">
+                        <strong>❌ Error:</strong> ${error.message}<br>
+                        <br>
+                        Please ensure:<br>
+                        • XAMPP/Apache is running<br>
+                        • MySQL database is running<br>
+                        • Database 'electromart' exists<br>
+                        • Run <code>setup.php</code> if database is empty
+                    </div>
+                `;
+            }
+        }
+        
+        // Run tests on page load
+        window.addEventListener('load', testAPIs);
+    </script>
+</body>
+</html>
