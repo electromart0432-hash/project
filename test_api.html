@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test API Endpoints</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .test-box {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-box h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    pre {
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      padding: 10px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+    button {
+      background: #2563c7;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #1e4fa4;
+    }
+  </style>
+</head>
+<body>
+  <h1>API Endpoint Test</h1>
+  
+  <div class="test-box">
+    <h3>📦 Orders Stats</h3>
+    <button onclick="testAPI('api_orders.php?action=stats', 'ordersResult')">Test Orders API</button>
+    <div id="ordersResult"></div>
+  </div>
+
+  <div class="test-box">
+    <h3>👥 Users Stats</h3>
+    <button onclick="testAPI('api_users.php?action=stats', 'usersResult')">Test Users API</button>
+    <div id="usersResult"></div>
+  </div>
+
+  <div class="test-box">
+    <h3>🛒 Products Stats</h3>
+    <button onclick="testAPI('api_products.php?action=stats', 'productsResult')">Test Products API</button>
+    <div id="productsResult"></div>
+  </div>
+
+  <div class="test-box">
+    <h3>Test All APIs</h3>
+    <button onclick="testAllAPIs()">Run All Tests</button>
+    <div id="allResult"></div>
+  </div>
+
+  <script>
+    async function testAPI(endpoint, resultId) {
+      const resultDiv = document.getElementById(resultId);
+      resultDiv.innerHTML = '<p>Loading...</p>';
+      
+      try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        if (response.ok) {
+          resultDiv.innerHTML = `
+            <p class="success">✓ API responded successfully</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <p class="error">✗ API returned an error (Status: ${response.status})</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <p class="error">✗ Error: ${error.message}</p>
+          <pre>${error.stack}</pre>
+        `;
+      }
+    }
+
+    async function testAllAPIs() {
+      const resultDiv = document.getElementById('allResult');
+      resultDiv.innerHTML = '<p>Testing all APIs...</p>';
+      
+      const results = {};
+      
+      try {
+        const ordersRes = await fetch('api_orders.php?action=stats');
+        results.orders = await ordersRes.json();
+        
+        const usersRes = await fetch('api_users.php?action=stats');
+        results.users = await usersRes.json();
+        
+        const productsRes = await fetch('api_products.php?action=stats');
+        results.products = await productsRes.json();
+        
+        const allSuccess = ordersRes.ok && usersRes.ok && productsRes.ok;
+        
+        resultDiv.innerHTML = `
+          <p class="${allSuccess ? 'success' : 'error'}">
+            ${allSuccess ? '✓ All APIs successful' : '✗ Some APIs failed'}
+          </p>
+          <pre>${JSON.stringify(results, null, 2)}</pre>
+        `;
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <p class="error">✗ Error: ${error.message}</p>
+          <pre>${error.stack}</pre>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
