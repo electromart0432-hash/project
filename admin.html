@@ -1,0 +1,3072 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectroMart — Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a2a6c;
+      --navy-dark: #131f52;
+      --blue: #2563c7;
+      --blue-light: #3b82f6;
+      --orange: #f97316;
+      --white: #fff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --info: #0284c7;
+      --info-bg: #e0f2fe;
+      --purple: #7c3aed;
+      --purple-bg: #f3e8ff;
+      --shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 16px rgba(26, 42, 108, 0.10);
+      --radius: 10px;
+      --sw: 255px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--navy-dark);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: var(--sw);
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-bolt {
+      font-size: 20px;
+    }
+
+    .tb-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tb-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tb-badge span {
+      color: var(--orange);
+    }
+
+    .tb-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .tb-search {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 6px 14px 6px 32px;
+      color: #fff;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      width: 190px;
+      transition: all 0.2s;
+    }
+
+    .tb-search::placeholder {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .tb-search:focus {
+      width: 220px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .tb-swrap {
+      position: relative;
+    }
+
+    .tb-swrap::before {
+      content: '🔍';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    .tb-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.18s;
+      position: relative;
+    }
+
+    .tb-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .tb-dot {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 7px;
+      height: 7px;
+      background: var(--orange);
+      border-radius: 50%;
+      border: 2px solid var(--navy-dark);
+    }
+
+    .tb-admin {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 22px;
+      padding: 3px 12px 3px 3px;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .tb-admin:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .tb-av {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), #fb923c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .tb-aname {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      margin-top: 54px;
+      min-height: calc(100vh - 54px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sw);
+      background: #fff;
+      border-right: 1px solid var(--gray-200);
+      position: fixed;
+      top: 54px;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .sb-revenue {
+      margin: 14px;
+      background: linear-gradient(135deg, var(--navy), #1e3a8a);
+      border-radius: var(--radius);
+      padding: 14px;
+      color: #fff;
+    }
+
+    .sb-rev-label {
+      font-size: 10px;
+      opacity: 0.65;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .sb-rev-val {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin: 2px 0;
+    }
+
+    .sb-rev-sub {
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    .sb-rev-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .sb-rev-mini {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 7px;
+      padding: 7px;
+      text-align: center;
+    }
+
+    .sb-rev-mini-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--orange);
+    }
+
+    .sb-rev-mini-l {
+      font-size: 9px;
+      opacity: 0.65;
+    }
+
+    .sb-btn {
+      margin-top: 10px;
+      width: 100%;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: opacity 0.18s;
+    }
+
+    .sb-btn:hover {
+      opacity: 0.85;
+    }
+
+    .sb-section {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--gray-400);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 18px 5px;
+    }
+
+    .navlink {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 18px;
+      color: var(--gray-700);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.18s;
+    }
+
+    .navlink:hover {
+      background: var(--gray-50);
+      color: var(--blue);
+    }
+
+    .navlink.active {
+      background: #eff6ff;
+      color: var(--blue);
+      border-left-color: var(--blue);
+      font-weight: 600;
+    }
+
+    .navlink .ni {
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nb {
+      margin-left: auto;
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    .nb.or {
+      background: var(--orange);
+    }
+
+    .nb.gr {
+      background: var(--success);
+    }
+
+    .sdiv {
+      height: 1px;
+      background: var(--gray-200);
+      margin: 7px 0;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sw);
+      flex: 1;
+      padding: 22px;
+    }
+
+    /* PAGE HEADER */
+    .ph {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      animation: slideD 0.35s ease;
+    }
+
+    @keyframes slideD {
+      from {
+        opacity: 0;
+        transform: translateY(-7px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .ph h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .ph-bc {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+
+    .ph-bc span {
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    .ph-right {
+      display: flex;
+      gap: 9px;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 13px;
+      margin-bottom: 20px;
+    }
+
+    .sc {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-200);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.22s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .sc:nth-child(1) {
+      animation-delay: .04s
+    }
+
+    .sc:nth-child(2) {
+      animation-delay: .08s
+    }
+
+    .sc:nth-child(3) {
+      animation-delay: .12s
+    }
+
+    .sc:nth-child(4) {
+      animation-delay: .16s
+    }
+
+    .sc:nth-child(5) {
+      animation-delay: .2s
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .sc:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .sc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .ic-b {
+      background: var(--info-bg)
+    }
+
+    .ic-o {
+      background: #fff7ed
+    }
+
+    .ic-g {
+      background: var(--success-bg)
+    }
+
+    .ic-p {
+      background: var(--purple-bg)
+    }
+
+    .ic-r {
+      background: var(--danger-bg)
+    }
+
+    .sc-val {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .sc-lbl {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 3px;
+    }
+
+    .sc-chg {
+      font-size: 10px;
+      margin-top: 5px;
+      font-weight: 600;
+    }
+
+    .up {
+      color: var(--success)
+    }
+
+    .nt {
+      color: var(--gray-400)
+    }
+
+    .dn {
+      color: var(--danger)
+    }
+
+    /* SECTION */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fadeUp 0.4s ease 0.2s both;
+      margin-bottom: 18px;
+    }
+
+    .ch {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ct {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .cs {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 1px;
+    }
+
+    /* BTNS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-light);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(37, 99, 199, 0.3);
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .btn-orange:hover {
+      opacity: 0.85;
+    }
+
+    .btn-ghost {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn-ghost:hover {
+      background: var(--gray-200);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+    }
+
+    .btn-outline:hover {
+      background: #eff6ff;
+    }
+
+    .btn-sm {
+      padding: 4px 11px;
+      font-size: 11px;
+      border-radius: 6px;
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #fca5a5;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #86efac;
+    }
+
+    .btn-success:hover {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-warn {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid #fde68a;
+    }
+
+    .btn-warn:hover {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    /* TABLE */
+    .tw {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--gray-50);
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-500);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--gray-100);
+      transition: background 0.13s;
+    }
+
+    tbody tr:hover {
+      background: var(--gray-50);
+    }
+
+    tbody td {
+      padding: 12px 14px;
+      font-size: 12.5px;
+      vertical-align: middle;
+    }
+
+    .tf {
+      padding: 11px 18px;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-500);
+      background: var(--gray-50);
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+
+    .b-success {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .b-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .b-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .b-info {
+      background: var(--info-bg);
+      color: var(--info);
+    }
+
+    .b-gray {
+      background: var(--gray-100);
+      color: var(--gray-500);
+    }
+
+    .b-purple {
+      background: var(--purple-bg);
+      color: var(--purple);
+    }
+
+    /* PAGINATION */
+    .pg {
+      display: flex;
+      gap: 3px;
+    }
+
+    .pgb {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--gray-200);
+      background: #fff;
+      color: var(--gray-700);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .pgb:hover,
+    .pgb.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    /* USER CELL */
+    .uc {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .uav {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .un {
+      font-weight: 600;
+      font-size: 12.5px;
+      color: var(--gray-900);
+    }
+
+    .ue {
+      font-size: 10px;
+      color: var(--gray-500);
+    }
+
+    /* ORDER ID */
+    .oid {
+      font-weight: 700;
+      color: var(--blue);
+      font-size: 12.5px;
+    }
+
+    .amt {
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    /* PAYMENT BADGE */
+    .pay-cod {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    .pay-upi {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    .pay-card {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 2px;
+      padding: 3px;
+      background: var(--gray-100);
+      border-radius: 9px;
+      margin-bottom: 16px;
+      width: fit-content;
+      border: 1px solid var(--gray-200);
+    }
+
+    .tab {
+      padding: 6px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      transition: all 0.16s;
+      border: none;
+      background: transparent;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .tab.active {
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(37, 99, 199, 0.25);
+    }
+
+    .tab:hover:not(.active) {
+      color: var(--gray-700);
+      background: #fff;
+    }
+
+    /* GRID */
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .g3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    /* PROGRESS */
+    .pr {
+      margin-bottom: 12px;
+    }
+
+    .pr-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-700);
+    }
+
+    .pr-bg {
+      background: var(--gray-200);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .pr-bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.2s ease;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      width: 520px;
+      max-width: 93vw;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      animation: mIn 0.22s ease;
+      overflow: hidden;
+    }
+
+    @keyframes mIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0)
+      }
+    }
+
+    .mh {
+      background: var(--navy);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mh-title {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mh-sub {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 10px;
+      margin-top: 1px;
+      font-family: monospace;
+    }
+
+    .mc {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mc:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .mb {
+      padding: 20px;
+    }
+
+    .fg {
+      margin-bottom: 13px;
+    }
+
+    .fl {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fi {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      font-family: 'Poppins', sans-serif;
+      color: var(--gray-900);
+      outline: none;
+      background: var(--gray-50);
+      transition: border-color 0.16s;
+    }
+
+    .fi:focus {
+      border-color: var(--blue);
+      background: #fff;
+    }
+
+    .fr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .mf {
+      padding: 14px 20px;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: 9px;
+      justify-content: flex-end;
+      background: var(--gray-50);
+    }
+
+    /* QUICK ACTION */
+    .qa {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--gray-100);
+      cursor: pointer;
+      transition: background 0.14s;
+    }
+
+    .qa:last-child {
+      border-bottom: none;
+    }
+
+    .qa:hover {
+      background: var(--gray-50);
+    }
+
+    .qa-ic {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .qa-t {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .qa-s {
+      font-size: 10px;
+      color: var(--gray-500);
+    }
+
+    .qa-arr {
+      margin-left: auto;
+      color: var(--gray-300);
+      font-size: 16px;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--navy);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      z-index: 9999;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-left: 4px solid var(--orange);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* DETAIL VIEW */
+    .dv-row {
+      display: flex;
+      border-bottom: 1px solid var(--gray-100);
+      padding: 10px 0;
+    }
+
+    .dv-row:last-child {
+      border-bottom: none;
+    }
+
+    .dv-key {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 130px;
+      flex-shrink: 0;
+    }
+
+    .dv-val {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    /* ACTIVITY */
+    .act-item {
+      display: flex;
+      gap: 11px;
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--gray-100);
+      align-items: flex-start;
+    }
+
+    .act-item:last-child {
+      border-bottom: none;
+    }
+
+    .act-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .act-txt {
+      font-size: 12px;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    .act-time {
+      font-size: 10px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+
+    /* INFO TILE */
+    .info-tile {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .it-label {
+      font-size: 10px;
+      color: var(--gray-500);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .it-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-top: 2px;
+    }
+
+    /* PROMO BANNER */
+    .promo {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 60%, var(--blue) 100%);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .promo h2 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .promo p {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .promo-stats {
+      display: flex;
+      gap: 22px;
+    }
+
+    .ps-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--orange);
+    }
+
+    .ps-lbl {
+      font-size: 9px;
+      opacity: 0.65;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="brand"><span class="brand-bolt">⚡</span><span class="brand-name">ElectroMart</span></div>
+    <div class="tb-center"><span class="tb-badge">🛡️ <span>Admin</span> Dashboard</span></div>
+    <div class="tb-right">
+      <div class="tb-swrap"><input class="tb-search" type="text" placeholder="Search orders, users..."></div>
+      <button class="tb-btn">🔔<span class="tb-dot"></span></button>
+      <button class="tb-btn">📧</button>
+      <div class="tb-admin">
+        <div class="tb-av">A</div><span class="tb-aname">Admin ▾</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-revenue">
+        <div class="sb-rev-label">Total Revenue</div>
+        <div class="sb-rev-val">₹9,796</div>
+        <div class="sb-rev-sub">bansi ₹5,098 · parth ₹4,698</div>
+        <div class="sb-rev-row">
+          <div class="sb-rev-mini">
+            <div class="sb-rev-mini-val">2</div>
+            <div class="sb-rev-mini-l">Orders</div>
+          </div>
+          <div class="sb-rev-mini">
+            <div class="sb-rev-mini-val">0</div>
+            <div class="sb-rev-mini-l">Users</div>
+          </div>
+          <div class="sb-rev-mini">
+            <div class="sb-rev-mini-val">48KB</div>
+            <div class="sb-rev-mini-l">DB Size</div>
+          </div>
+        </div>
+        <button class="sb-btn" onclick="showSec('orders',document.querySelectorAll('.navlink')[2])">📦 View All Orders
+          →</button>
+      </div>
+
+      <div class="sb-section">Main</div>
+      <div class="navlink active" onclick="showSec('dashboard',this)"><span class="ni">📊</span>Dashboard</div>
+      <div class="navlink" onclick="showSec('orders',this)"><span class="ni">📦</span>Orders<span class="nb">2</span>
+      </div>
+      <div class="navlink" onclick="showSec('users',this)"><span class="ni">👥</span>Users<span class="nb gr">0</span>
+      </div>
+      <div class="navlink" onclick="showSec('analytics',this)"><span class="ni">📈</span>Analytics</div>
+      <div class="sdiv"></div>
+      <div class="sb-section">Store</div>
+      <div class="navlink" onclick="showSec('products',this)"><span class="ni">🛒</span>Products<span
+          class="nb or">18</span></div>
+      <div class="navlink" onclick="showSec('categories',this)"><span class="ni">🏷️</span>Categories</div>
+      <div class="navlink" onclick="showSec('brands',this)"><span class="ni">⭐</span>Brands</div>
+      <div class="navlink" onclick="showSec('payments',this)"><span class="ni">💳</span>Payments</div>
+      <div class="sdiv"></div>
+      <div class="sb-section">System</div>
+      <div class="navlink" onclick="showSec('settings',this)"><span class="ni">⚙️</span>Settings</div>
+      <div class="navlink" onclick="showSec('database',this)"><span class="ni">🗃️</span>Database Info</div>
+      <div class="navlink" style="color:var(--danger)" onclick="adminLogout()"><span class="ni">🚪</span>Logout</div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- PAGE HEADER -->
+      <div class="ph">
+        <div>
+          <h1 id="ptitle">Dashboard</h1>
+          <div class="ph-bc">electromart / <span id="pcrumb">overview</span></div>
+        </div>
+        <div class="ph-right" id="pactions">
+          <button class="btn btn-ghost btn-sm">📅 Feb 2026</button>
+          <button class="btn btn-orange btn-sm" onclick="openM('addOrder')">+ New Order</button>
+        </div>
+      </div>
+
+      <!-- =================== DASHBOARD =================== -->
+      <div class="section active" id="sec-dashboard">
+        <div class="stats" id="mainStats">
+          <div class="sc">
+            <div class="sc-icon ic-b">📦</div>
+            <div>
+              <div class="sc-val">-</div>
+              <div class="sc-lbl">Total Orders</div>
+              <div class="sc-chg up">Loading...</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-o">💰</div>
+            <div>
+              <div class="sc-val">-</div>
+              <div class="sc-lbl">Total Revenue</div>
+              <div class="sc-chg up">Loading...</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-g">👥</div>
+            <div>
+              <div class="sc-val">-</div>
+              <div class="sc-lbl">Registered Users</div>
+              <div class="sc-chg nt">Loading...</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-p">🛒</div>
+            <div>
+              <div class="sc-val">-</div>
+              <div class="sc-lbl">Products</div>
+              <div class="sc-chg up">Loading...</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-r">📍</div>
+            <div>
+              <div class="sc-val">-</div>
+              <div class="sc-lbl">Cities Served</div>
+              <div class="sc-chg up">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="promo">
+          <div>
+            <h2>🎉 Mega Electronics Sale — Up to 60% OFF</h2>
+            <p>Fans · Geysers · Air Conditioners — Live on ElectroMart</p>
+          </div>
+          <div class="promo-stats">
+            <div>
+              <div class="ps-val">₹9,796</div>
+              <div class="ps-lbl">Revenue</div>
+            </div>
+            <div>
+              <div class="ps-val">COD+UPI</div>
+              <div class="ps-lbl">Payments</div>
+            </div>
+            <div>
+              <div class="ps-val">48KB</div>
+              <div class="ps-lbl">DB Size</div>
+            </div>
+          </div>
+          <button class="btn btn-orange btn-sm">View Orders →</button>
+        </div>
+
+        <div class="g2">
+          <!-- REAL ORDERS -->
+          <div class="card">
+            <div class="ch">
+              <div>
+                <div class="ct">📦 Live Orders</div>
+                <div class="cs">orders table · 2 real records</div>
+              </div>
+              <button class="btn btn-outline btn-sm"
+                onclick="showSec('orders',document.querySelectorAll('.navlink')[1])">View All</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>City</th>
+                  <th>Payment</th>
+                  <th>Total</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="oid">#1</span></td>
+                  <td>
+                    <div class="uc">
+                      <div class="uav" style="background:#2563c7">B</div>
+                      <div>
+                        <div class="un">bansi</div>
+                        <div class="ue">leela circal bhavnagar</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Not Specified</td>
+                  <td><span class="pay-cod">COD</span></td>
+                  <td><span class="amt">₹5,098</span></td>
+                  <td style="font-size:10px;color:var(--gray-500)">2026-02-18</td>
+                </tr>
+                <tr>
+                  <td><span class="oid">#2</span></td>
+                  <td>
+                    <div class="uc">
+                      <div class="uav" style="background:#f97316">P</div>
+                      <div>
+                        <div class="un">parth</div>
+                        <div class="ue">nirma bhavnagar</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Not Specified</td>
+                  <td><span class="pay-upi">UPI</span></td>
+                  <td><span class="amt">₹4,698</span></td>
+                  <td style="font-size:10px;color:var(--gray-500)">2026-02-18</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- QUICK ACTIONS + INSIGHTS -->
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card">
+              <div class="ch">
+                <div class="ct">⚡ Quick Actions</div>
+              </div>
+              <div class="qa" onclick="openM('addOrder')">
+                <div class="qa-ic" style="background:#eff6ff">📦</div>
+                <div>
+                  <div class="qa-t">New Order</div>
+                  <div class="qa-s">INSERT INTO orders</div>
+                </div><span class="qa-arr">›</span>
+              </div>
+              <div class="qa" onclick="openM('addUser')">
+                <div class="qa-ic" style="background:#f0fdf4">👤</div>
+                <div>
+                  <div class="qa-t">Add User</div>
+                  <div class="qa-s">INSERT INTO users</div>
+                </div><span class="qa-arr">›</span>
+              </div>
+              <div class="qa" onclick="openM('addProduct')">
+                <div class="qa-ic" style="background:#fff7ed">🛒</div>
+                <div>
+                  <div class="qa-t">Add Product</div>
+                  <div class="qa-s">Fans, Geysers, ACs</div>
+                </div><span class="qa-arr">›</span>
+              </div>
+              <div class="qa" onclick="showToast('Exporting CSV...')">
+                <div class="qa-ic" style="background:#fdf4ff">📊</div>
+                <div>
+                  <div class="qa-t">Export Orders CSV</div>
+                  <div class="qa-s">Download all records</div>
+                </div><span class="qa-arr">›</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="ch">
+                <div class="ct">💳 Payment Breakdown</div>
+              </div>
+              <div style="padding:14px 18px">
+                <div class="pr">
+                  <div class="pr-label"><span>💵 COD (bansi)</span><span>52%</span></div>
+                  <div class="pr-bg">
+                    <div class="pr-bar" style="width:52%;background:#ea580c"></div>
+                  </div>
+                </div>
+                <div class="pr">
+                  <div class="pr-label"><span>📱 UPI (parth)</span><span>48%</span></div>
+                  <div class="pr-bg">
+                    <div class="pr-bar" style="width:48%;background:#16a34a"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="g3">
+          <div class="card">
+            <div class="ch">
+              <div class="ct">📍 Orders by City</div>
+            </div>
+            <div style="padding:14px 18px">
+              <div class="pr">
+                <div class="pr-label"><span>📍 Bhavnagar</span><span>100%</span></div>
+                <div class="pr-bg">
+                  <div class="pr-bar" style="width:100%;background:var(--blue)"></div>
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--gray-500);margin-top:8px">leela circal + nirma bhavnagar</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div class="ct">💰 Revenue Split</div>
+            </div>
+            <div style="padding:14px 18px">
+              <div class="pr">
+                <div class="pr-label"><span>bansi</span><span>₹5,098</span></div>
+                <div class="pr-bg">
+                  <div class="pr-bar" style="width:52%;background:var(--blue)"></div>
+                </div>
+              </div>
+              <div class="pr">
+                <div class="pr-label"><span>parth</span><span>₹4,698</span></div>
+                <div class="pr-bg">
+                  <div class="pr-bar" style="width:48%;background:var(--orange)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div class="ct">🗃️ Database Info</div>
+            </div>
+            <div style="padding:14px 18px;display:flex;flex-direction:column;gap:7px;">
+              <div class="dv-row"><span class="dv-key">DB Name</span><span class="dv-val">electromart</span></div>
+              <div class="dv-row"><span class="dv-key">Orders Rows</span><span class="dv-val"
+                  style="color:var(--blue)">2 records</span></div>
+              <div class="dv-row"><span class="dv-key">Users Rows</span><span class="dv-val"
+                  style="color:var(--gray-400)">0 records</span></div>
+              <div class="dv-row"><span class="dv-key">Total Size</span><span class="dv-val">48 KiB</span></div>
+              <div class="dv-row"><span class="dv-key">Engine</span><span class="dv-val">InnoDB</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="ch">
+            <div class="ct">🕐 Recent Activity</div><button class="btn btn-ghost btn-sm">Clear</button>
+          </div>
+          <div class="act-item">
+            <div class="act-dot" style="background:var(--success)"></div>
+            <div>
+              <div class="act-txt"><strong>Order #2</strong> by parth — nirma bhavnagar — ₹4,698 via UPI</div>
+              <div class="act-time">2026-02-18 21:24:41</div>
+            </div>
+          </div>
+          <div class="act-item">
+            <div class="act-dot" style="background:var(--orange)"></div>
+            <div>
+              <div class="act-txt"><strong>Order #1</strong> by bansi — leela circal bhavnagar — ₹5,098 via COD</div>
+              <div class="act-time">2026-02-18 21:16:21</div>
+            </div>
+          </div>
+          <div class="act-item">
+            <div class="act-dot" style="background:var(--blue)"></div>
+            <div>
+              <div class="act-txt"><strong>Database</strong> electromart created with orders & users tables · InnoDB ·
+                48KB</div>
+              <div class="act-time">Today</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== ORDERS =================== -->
+      <div class="section" id="sec-orders">
+        <div class="tabs">
+          <button class="tab active" onclick="filterOrders('all',this)">All (2)</button>
+          <button class="tab" onclick="filterOrders('pending',this)">⏳ Pending</button>
+          <button class="tab" onclick="filterOrders('delivered',this)">✅ Delivered</button>
+          <button class="tab" onclick="filterOrders('cancelled',this)">❌ Cancelled</button>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div>
+              <div class="ct">📦 Orders — electromart.orders</div>
+              <div class="cs">id · full_name · address · city · payment_method · total_amount · order_date</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm">⬇ Export CSV</button>
+              <button class="btn btn-primary btn-sm" onclick="openM('addOrder')">+ New Order</button>
+            </div>
+          </div>
+          <div class="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="ca" onchange="toggleAll(this)"></th>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>Payment</th>
+                  <th>Total Amount</th>
+                  <th>Order Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody">
+                <tr data-status="delivered">
+                  <td><input type="checkbox"></td>
+                  <td><span class="oid">#1</span></td>
+                  <td>
+                    <div class="uc">
+                      <div class="uav" style="background:#2563c7">B</div>
+                      <div>
+                        <div class="un">bansi</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="max-width:130px;font-size:11px;color:var(--gray-600)">leela circal bhavnagar</td>
+                  <td>Not Specified</td>
+                  <td><span class="pay-cod">COD</span></td>
+                  <td><span class="amt">₹5,098.00</span></td>
+                  <td style="font-size:10px;color:var(--gray-500);white-space:nowrap">2026-02-18 21:16:21</td>
+                  <td><span class="badge b-success">✅ Delivered</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px">
+                      <button class="btn btn-success btn-sm" onclick="openM('viewOrder',1)">👁</button>
+                      <button class="btn btn-outline btn-sm" onclick="openM('editOrder',1)">✏️</button>
+                      <button class="btn btn-danger btn-sm" onclick="delRow(this)">🗑</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-status="pending">
+                  <td><input type="checkbox"></td>
+                  <td><span class="oid">#2</span></td>
+                  <td>
+                    <div class="uc">
+                      <div class="uav" style="background:#f97316">P</div>
+                      <div>
+                        <div class="un">parth</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="max-width:130px;font-size:11px;color:var(--gray-600)">nirma bhavnagar</td>
+                  <td>Not Specified</td>
+                  <td><span class="pay-upi">UPI</span></td>
+                  <td><span class="amt">₹4,698.00</span></td>
+                  <td style="font-size:10px;color:var(--gray-500);white-space:nowrap">2026-02-18 21:24:41</td>
+                  <td><span class="badge b-warning">⏳ Pending</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px">
+                      <button class="btn btn-success btn-sm" onclick="openM('viewOrder',2)">👁</button>
+                      <button class="btn btn-outline btn-sm" onclick="openM('editOrder',2)">✏️</button>
+                      <button class="btn btn-danger btn-sm" onclick="delRow(this)">🗑</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tf">
+            <span>Showing <strong id="orderCount">2</strong> orders · Total Revenue: <strong
+                style="color:var(--blue)">₹9,796.00</strong></span>
+            <div class="pg"><button class="pgb">‹</button><button class="pgb active">1</button><button
+                class="pgb">›</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== USERS =================== -->
+      <div class="section" id="sec-users">
+        <div class="card">
+          <div class="ch">
+            <div>
+              <div class="ct">👥 Users — electromart.users</div>
+              <div class="cs">users table · 0 records currently</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm">⬇ Export</button>
+              <button class="btn btn-primary btn-sm" onclick="openM('addUser')">+ Add User</button>
+            </div>
+          </div>
+          <div class="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Password</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody">
+                <tr>
+                  <td colspan="9" style="text-align:center;padding:40px;color:var(--gray-500);font-size:13px;">
+                    <div style="font-size:36px;margin-bottom:8px">👥</div>
+                    <strong>Users table is empty</strong><br>
+                    <span style="font-size:11px">No users registered yet in electromart.users</span>
+                    <div style="margin-top:12px"><button class="btn btn-primary btn-sm" onclick="openM('addUser')">+ Add
+                        First User</button></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tf"><span>0 records in users table</span>
+            <div class="pg"><button class="pgb active">1</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== ANALYTICS =================== -->
+      <div class="section" id="sec-analytics">
+        <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sc">
+            <div class="sc-icon ic-o">💰</div>
+            <div>
+              <div class="sc-val">₹9,796</div>
+              <div class="sc-lbl">Total Revenue</div>
+              <div class="sc-chg up">↑ Both orders paid</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-b">📊</div>
+            <div>
+              <div class="sc-val">₹4,898</div>
+              <div class="sc-lbl">Avg Order Value</div>
+              <div class="sc-chg nt">₹9,796 ÷ 2</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-g">🏆</div>
+            <div>
+              <div class="sc-val">bansi</div>
+              <div class="sc-lbl">Top Customer</div>
+              <div class="sc-chg up">↑ ₹5,098 · COD</div>
+            </div>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="ch">
+              <div class="ct">💳 Payment Method Analysis</div>
+            </div>
+            <div style="padding:16px 18px">
+              <div style="display:flex;gap:12px;margin-bottom:14px">
+                <div class="info-tile" style="flex:1;text-align:center">
+                  <div class="it-label">COD Orders</div>
+                  <div class="it-val" style="color:#ea580c">1</div>
+                  <div style="font-size:10px;color:var(--gray-500)">₹5,098 · bansi</div>
+                </div>
+                <div class="info-tile" style="flex:1;text-align:center">
+                  <div class="it-label">UPI Orders</div>
+                  <div class="it-val" style="color:#16a34a">1</div>
+                  <div style="font-size:10px;color:var(--gray-500)">₹4,698 · parth</div>
+                </div>
+              </div>
+              <div class="pr">
+                <div class="pr-label"><span>💵 COD (Cash on Delivery)</span><span>52% · ₹5,098</span></div>
+                <div class="pr-bg">
+                  <div class="pr-bar" style="width:52%;background:#ea580c"></div>
+                </div>
+              </div>
+              <div class="pr">
+                <div class="pr-label"><span>📱 UPI (Digital Payment)</span><span>48% · ₹4,698</span></div>
+                <div class="pr-bg">
+                  <div class="pr-bar" style="width:48%;background:#16a34a"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div class="ct">📍 Delivery Locations</div>
+            </div>
+            <div style="padding:16px 18px">
+              <div class="dv-row"><span class="dv-key">Order #1</span><span class="dv-val" style="font-size:12px">leela
+                  circal bhavnagar</span></div>
+              <div class="dv-row"><span class="dv-key">Order #2</span><span class="dv-val" style="font-size:12px">nirma
+                  bhavnagar</span></div>
+              <div class="dv-row"><span class="dv-key">City</span><span class="dv-val">Bhavnagar (Gujarat)</span></div>
+              <div class="dv-row"><span class="dv-key">Pin Status</span><span class="dv-val"><span
+                    class="badge b-warning">Not Specified</span></span></div>
+              <div style="margin-top:12px">
+                <div class="pr">
+                  <div class="pr-label"><span>📍 Bhavnagar</span><span>100% of orders</span></div>
+                  <div class="pr-bg">
+                    <div class="pr-bar" style="width:100%;background:var(--blue)"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div class="ct">📅 Order Timeline — Feb 18, 2026</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Payment</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family:monospace;font-size:11px">21:16:21</td>
+                <td><span class="oid">#1</span></td>
+                <td><strong>bansi</strong></td>
+                <td><span class="amt">₹5,098</span></td>
+                <td><span class="pay-cod">COD</span></td>
+                <td style="font-size:11px;color:var(--gray-500)">leela circal bhavnagar</td>
+              </tr>
+              <tr>
+                <td style="font-family:monospace;font-size:11px">21:24:41</td>
+                <td><span class="oid">#2</span></td>
+                <td><strong>parth</strong></td>
+                <td><span class="amt">₹4,698</span></td>
+                <td><span class="pay-upi">UPI</span></td>
+                <td style="font-size:11px;color:var(--gray-500)">nirma bhavnagar</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tf"><span>Time gap between orders: <strong>8 minutes 20 seconds</strong></span></div>
+        </div>
+      </div>
+
+      <!-- =================== PRODUCTS =================== -->
+      <div class="section" id="sec-products">
+        <div class="tabs">
+          <button class="tab active" onclick="filterCat('all',this)">All Products (18)</button>
+          <button class="tab" onclick="filterCat('fan',this)">🌀 Fans (8)</button>
+          <button class="tab" onclick="filterCat('geyser',this)">🔥 Geysers (5)</button>
+          <button class="tab" onclick="filterCat('ac',this)">❄️ Air Conditioners (5)</button>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div>
+              <div class="ct">🛒 Products Inventory</div>
+              <div class="cs">Havells · Bajaj · Orient · Voltas · LG</div>
+            </div>
+            <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm">⬇ Export</button><button
+                class="btn btn-primary btn-sm" onclick="openM('addProduct')">+ Add Product</button></div>
+          </div>
+          <div class="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Brand</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productBody">
+                <tr data-cat="fan">
+                  <td><span class="oid">#1</span></td>
+                  <td>Havells Stealth Air 1200mm Fan</td>
+                  <td><span class="badge b-info">🌀 Fan</span></td>
+                  <td>Havells</td>
+                  <td>₹5,299</td>
+                  <td><span class="badge b-danger">38% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="fan">
+                  <td><span class="oid">#2</span></td>
+                  <td>Bajaj Regal Gold 1200mm Fan</td>
+                  <td><span class="badge b-info">🌀 Fan</span></td>
+                  <td>Bajaj</td>
+                  <td>₹4,299</td>
+                  <td><span class="badge b-danger">42% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="fan">
+                  <td><span class="oid">#3</span></td>
+                  <td>Orient Aeroquiet 1200mm Fan</td>
+                  <td><span class="badge b-info">🌀 Fan</span></td>
+                  <td>Orient</td>
+                  <td>₹3,399</td>
+                  <td><span class="badge b-danger">35% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="geyser">
+                  <td><span class="oid">#4</span></td>
+                  <td>Havells Monza 15L Storage Geyser</td>
+                  <td><span class="badge b-danger">🔥 Geyser</span></td>
+                  <td>Havells</td>
+                  <td>₹8,699</td>
+                  <td><span class="badge b-danger">25% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="geyser">
+                  <td><span class="oid">#5</span></td>
+                  <td>Bajaj New Shakti GL 25L Geyser</td>
+                  <td><span class="badge b-danger">🔥 Geyser</span></td>
+                  <td>Bajaj</td>
+                  <td>₹7,499</td>
+                  <td><span class="badge b-danger">30% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="ac">
+                  <td><span class="oid">#6</span></td>
+                  <td>Voltas 1.5 Ton 5★ Inverter Split AC</td>
+                  <td><span class="badge b-success">❄️ AC</span></td>
+                  <td>Voltas</td>
+                  <td>₹48,999</td>
+                  <td><span class="badge b-danger">20% OFF</span></td>
+                  <td><span style="color:var(--success);font-weight:600">In Stock</span></td>
+                  <td><span class="badge b-success">Active</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+                <tr data-cat="ac">
+                  <td><span class="oid">#7</span></td>
+                  <td>LG 2 Ton 3★ Window AC</td>
+                  <td><span class="badge b-success">❄️ AC</span></td>
+                  <td>LG</td>
+                  <td>₹38,000</td>
+                  <td><span class="badge b-danger">15% OFF</span></td>
+                  <td><span style="color:var(--warning);font-weight:600">Low Stock</span></td>
+                  <td><span class="badge b-warning">Low Stock</span></td>
+                  <td>
+                    <div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm"
+                        onclick="openM('editProduct')">✏️</button><button class="btn btn-danger btn-sm"
+                        onclick="delRow(this)">🗑</button></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tf"><span>Showing 7 of 18 products</span>
+            <div class="pg"><button class="pgb">‹</button><button class="pgb active">1</button><button
+                class="pgb">2</button><button class="pgb">3</button><button class="pgb">›</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== CATEGORIES =================== -->
+      <div class="section" id="sec-categories">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">🏷️ Categories</div><button class="btn btn-primary btn-sm">+ Add Category</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Icon</th>
+                <th>Name</th>
+                <th>Products</th>
+                <th>Revenue</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-size:24px">🌀</td>
+                <td><strong>Fans</strong></td>
+                <td><span class="badge b-info">8</span></td>
+                <td>₹3,399</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td style="font-size:24px">🔥</td>
+                <td><strong>Geysers</strong></td>
+                <td><span class="badge b-info">5</span></td>
+                <td>₹5,098</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td style="font-size:24px">❄️</td>
+                <td><strong>Air Conditioners</strong></td>
+                <td><span class="badge b-info">5</span></td>
+                <td>₹4,698</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =================== BRANDS =================== -->
+      <div class="section" id="sec-brands">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">⭐ Brands</div><button class="btn btn-primary btn-sm">+ Add Brand</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Categories</th>
+                <th>Products</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Havells</strong></td>
+                <td>Fans, Geysers</td>
+                <td>6</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><strong>Bajaj</strong></td>
+                <td>Fans, Geysers</td>
+                <td>5</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><strong>Orient</strong></td>
+                <td>Fans</td>
+                <td>3</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><strong>Voltas</strong></td>
+                <td>Air Conditioners</td>
+                <td>2</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><strong>LG</strong></td>
+                <td>Air Conditioners</td>
+                <td>2</td>
+                <td><span class="badge b-success">Active</span></td>
+                <td><button class="btn btn-outline btn-sm">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =================== PAYMENTS =================== -->
+      <div class="section" id="sec-payments">
+        <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sc">
+            <div class="sc-icon ic-o">💵</div>
+            <div>
+              <div class="sc-val">1</div>
+              <div class="sc-lbl">COD Orders</div>
+              <div class="sc-chg up">↑ ₹5,098 · bansi</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-g">📱</div>
+            <div>
+              <div class="sc-val">1</div>
+              <div class="sc-lbl">UPI Orders</div>
+              <div class="sc-chg up">↑ ₹4,698 · parth</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-icon ic-b">💰</div>
+            <div>
+              <div class="sc-val">₹9,796</div>
+              <div class="sc-lbl">Total Collected</div>
+              <div class="sc-chg up">↑ All orders paid</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div class="ct">💳 Payment Transactions — electromart.orders.payment_method</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Method</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="oid">#1</span></td>
+                <td><strong>bansi</strong></td>
+                <td><span class="pay-cod">COD</span></td>
+                <td><span class="amt">₹5,098.00</span></td>
+                <td style="font-size:11px;color:var(--gray-500)">2026-02-18 21:16:21</td>
+                <td><span class="badge b-success">✅ Paid</span></td>
+              </tr>
+              <tr>
+                <td><span class="oid">#2</span></td>
+                <td><strong>parth</strong></td>
+                <td><span class="pay-upi">UPI</span></td>
+                <td><span class="amt">₹4,698.00</span></td>
+                <td style="font-size:11px;color:var(--gray-500)">2026-02-18 21:24:41</td>
+                <td><span class="badge b-warning">⏳ Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tf"><span>Total: ₹9,796.00 · COD: ₹5,098 · UPI: ₹4,698</span></div>
+        </div>
+      </div>
+
+      <!-- =================== SETTINGS =================== -->
+      <div class="section" id="sec-settings">
+        <div class="card" style="max-width:660px">
+          <div class="ch">
+            <div class="ct">⚙️ Store Settings</div><button class="btn btn-primary btn-sm"
+              onclick="showToast('✅ Settings saved!')">💾 Save</button>
+          </div>
+          <div style="padding:18px">
+            <div class="fr" style="margin-bottom:13px">
+              <div class="fg"><label class="fl">Store Name</label><input class="fi" value="ElectroMart" type="text">
+              </div>
+              <div class="fg"><label class="fl">Admin Email</label><input class="fi" value="admin@electromart.com"
+                  type="email"></div>
+            </div>
+            <div class="fr" style="margin-bottom:13px">
+              <div class="fg"><label class="fl">Currency</label><select class="fi">
+                  <option selected>INR — Indian Rupee (₹)</option>
+                  <option>USD ($)</option>
+                </select></div>
+              <div class="fg"><label class="fl">Timezone</label><select class="fi">
+                  <option selected>Asia/Kolkata (IST)</option>
+                  <option>UTC</option>
+                </select></div>
+            </div>
+            <div class="fg"><label class="fl">Site URL</label><input class="fi" value="http://localhost/project/"
+                type="text"></div>
+            <div class="fg" style="margin-top:2px"><label class="fl">Database</label><input class="fi"
+                value="electromart · InnoDB · utf8mb4_general_ci · 48 KiB" readonly style="color:var(--gray-500)"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== DATABASE INFO =================== -->
+      <div class="section" id="sec-database">
+        <div class="g2">
+          <div class="card">
+            <div class="ch">
+              <div class="ct">🗃️ orders Table Structure</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Column</th>
+                  <th>Type</th>
+                  <th>Sample Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:var(--blue)">id</strong></td>
+                  <td><span class="badge b-purple">INT</span></td>
+                  <td>1, 2</td>
+                </tr>
+                <tr>
+                  <td><strong>full_name</strong></td>
+                  <td><span class="badge b-info">VARCHAR</span></td>
+                  <td>bansi, parth</td>
+                </tr>
+                <tr>
+                  <td><strong>address</strong></td>
+                  <td><span class="badge b-info">TEXT</span></td>
+                  <td>leela circal bhavnagar</td>
+                </tr>
+                <tr>
+                  <td><strong>city</strong></td>
+                  <td><span class="badge b-info">VARCHAR</span></td>
+                  <td>Not Specified</td>
+                </tr>
+                <tr>
+                  <td><strong>payment_method</strong></td>
+                  <td><span class="badge b-info">VARCHAR</span></td>
+                  <td>cod, upi</td>
+                </tr>
+                <tr>
+                  <td><strong>total_amount</strong></td>
+                  <td><span class="badge b-warning">DECIMAL</span></td>
+                  <td>5098.00, 4698.00</td>
+                </tr>
+                <tr>
+                  <td><strong>order_date</strong></td>
+                  <td><span class="badge b-success">DATETIME</span></td>
+                  <td>2026-02-18 21:16:21</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div class="ct">👥 users Table Structure</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Column</th>
+                  <th>Type</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:var(--blue)">id</strong></td>
+                  <td><span class="badge b-purple">INT (AI)</span></td>
+                  <td>Primary Key</td>
+                </tr>
+                <tr>
+                  <td><strong>full_name / name</strong></td>
+                  <td><span class="badge b-info">VARCHAR</span></td>
+                  <td>User's name</td>
+                </tr>
+                <tr>
+                  <td><strong>email</strong></td>
+                  <td><span class="badge b-info">VARCHAR</span></td>
+                  <td>Login email</td>
+                </tr>
+                <tr>
+                  <td><strong>password</strong></td>
+                  <td><span class="badge b-danger">VARCHAR</span></td>
+                  <td>Hashed password</td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="text-align:center;color:var(--gray-400);font-size:11px;padding:16px">0 rows ·
+                    Table is empty · 32KB reserved</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="tf"><span>Size: 32 KiB · Engine: InnoDB · Collation: utf8mb4_general_ci</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch">
+            <div class="ct">📊 Database Summary — electromart</div>
+          </div>
+          <div style="padding:16px 18px">
+            <div class="dv-row"><span class="dv-key">Database</span><span class="dv-val">electromart</span></div>
+            <div class="dv-row"><span class="dv-key">Tables</span><span class="dv-val">2 (orders · users)</span></div>
+            <div class="dv-row"><span class="dv-key">orders Rows</span><span class="dv-val" style="color:var(--blue)">2
+                records (bansi, parth)</span></div>
+            <div class="dv-row"><span class="dv-key">users Rows</span><span class="dv-val"
+                style="color:var(--gray-400)">0 records (empty)</span></div>
+            <div class="dv-row"><span class="dv-key">Total DB Size</span><span class="dv-val">48 KiB (16+32)</span>
+            </div>
+            <div class="dv-row"><span class="dv-key">Engine</span><span class="dv-val">InnoDB</span></div>
+            <div class="dv-row"><span class="dv-key">Collation</span><span class="dv-val">utf8mb4_general_ci</span>
+            </div>
+            <div class="dv-row"><span class="dv-key">Server</span><span class="dv-val">localhost / phpMyAdmin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========= MODALS ========= -->
+
+  <!-- Admin Login -->
+  <div class="modal-overlay" id="modal-adminLogin">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">🔐 Admin Login</div>
+          <div class="mh-sub">Please enter admin credentials to access dashboard</div>
+        </div><button class="mc" onclick="closeM('adminLogin')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fg"><label class="fl">Username</label><input class="fi" id="adminUser" type="text"
+            placeholder="admin"></div>
+        <div class="fg"><label class="fl">Password</label><input class="fi" id="adminPass" type="password"
+            placeholder="••••••••"></div>
+        <div id="adminLoginErr" style="color:var(--danger);font-size:12px;display:none;margin-top:6px;"></div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('adminLogin')">Cancel</button><button
+          class="btn btn-primary" onclick="doAdminLogin()">🔐 Sign In</button></div>
+    </div>
+  </div>
+
+  <!-- Add Order -->
+  <div class="modal-overlay" id="modal-addOrder">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">📦 New Order</div>
+          <div class="mh-sub">INSERT INTO electromart.orders (full_name, address, city, payment_method, total_amount)
+          </div>
+        </div><button class="mc" onclick="closeM('addOrder')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fr">
+          <div class="fg"><label class="fl">Full Name</label><input class="fi" id="nof" type="text"
+              placeholder="Customer name (e.g. bansi)"></div>
+          <div class="fg"><label class="fl">City</label><input class="fi" id="noc" type="text"
+              placeholder="e.g. Bhavnagar"></div>
+        </div>
+        <div class="fg"><label class="fl">Address</label><input class="fi" id="noa" type="text"
+            placeholder="e.g. leela circal bhavnagar"></div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Payment Method</label><select class="fi" id="nop">
+              <option value="cod">💵 COD</option>
+              <option value="upi">📱 UPI</option>
+              <option value="card">💳 Card</option>
+              <option value="netbanking">🏦 Net Banking</option>
+            </select></div>
+          <div class="fg"><label class="fl">Total Amount (₹)</label><input class="fi" id="noamt" type="number"
+              placeholder="5098.00" step="0.01"></div>
+        </div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('addOrder')">Cancel</button><button
+          class="btn btn-primary" onclick="addOrder()">📦 Place Order</button></div>
+    </div>
+  </div>
+
+  <!-- Add User -->
+  <div class="modal-overlay" id="modal-addUser">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">👤 New User</div>
+          <div class="mh-sub">INSERT INTO electromart.users</div>
+        </div><button class="mc" onclick="closeM('addUser')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fr">
+          <div class="fg"><label class="fl">Full Name</label><input class="fi" id="nuf" type="text"
+              placeholder="Full name"></div>
+          <div class="fg"><label class="fl">Email</label><input class="fi" id="nue" type="email"
+              placeholder="user@email.com"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" placeholder="+91 9999999999">
+          </div>
+          <div class="fg"><label class="fl">Role</label><select class="fi" id="nur">
+              <option>customer</option>
+              <option>admin</option>
+            </select></div>
+        </div>
+        <div class="fg"><label class="fl">Password</label><input class="fi" type="password"
+            placeholder="Min 8 characters"></div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('addUser')">Cancel</button><button
+          class="btn btn-primary" onclick="addUser()">👤 Create User</button></div>
+    </div>
+  </div>
+
+  <!-- Add Product -->
+  <div class="modal-overlay" id="modal-addProduct">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">🛒 Add Product</div>
+          <div class="mh-sub">ElectroMart — Fans / Geysers / ACs</div>
+        </div><button class="mc" onclick="closeM('addProduct')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fg"><label class="fl">Product Name</label><input class="fi" type="text"
+            placeholder="e.g. Havells Stealth Air 1200mm Fan"></div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Category</label><select class="fi">
+              <option>🌀 Fans</option>
+              <option>🔥 Geysers</option>
+              <option>❄️ Air Conditioners</option>
+            </select></div>
+          <div class="fg"><label class="fl">Brand</label><select class="fi">
+              <option>Havells</option>
+              <option>Bajaj</option>
+              <option>Orient</option>
+              <option>Voltas</option>
+              <option>LG</option>
+            </select></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">MRP Price (₹)</label><input class="fi" type="number" placeholder="5299">
+          </div>
+          <div class="fg"><label class="fl">Discount %</label><input class="fi" type="number" placeholder="38" min="0"
+              max="80"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Stock Qty</label><input class="fi" type="number" placeholder="50"></div>
+          <div class="fg"><label class="fl">Rating</label><select class="fi">
+              <option>⭐⭐⭐⭐⭐ 5 Star</option>
+              <option>⭐⭐⭐⭐ 4 Star</option>
+              <option>⭐⭐⭐ 3 Star</option>
+            </select></div>
+        </div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('addProduct')">Cancel</button><button
+          class="btn btn-orange" onclick="showToast('✅ Product added!');closeM('addProduct')">🛒 Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product -->
+  <div class="modal-overlay" id="modal-editProduct">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">✏️ Edit Product</div>
+          <div class="mh-sub">UPDATE products SET ...</div>
+        </div><button class="mc" onclick="closeM('editProduct')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fg"><label class="fl">Product Name</label><input class="fi" type="text"
+            value="Havells Stealth Air 1200mm Ceiling Fan"></div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Category</label><select class="fi">
+              <option selected>🌀 Fans</option>
+              <option>🔥 Geysers</option>
+              <option>❄️ ACs</option>
+            </select></div>
+          <div class="fg"><label class="fl">Brand</label><select class="fi">
+              <option selected>Havells</option>
+              <option>Bajaj</option>
+              <option>Orient</option>
+            </select></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Price (₹)</label><input class="fi" type="number" value="5299"></div>
+          <div class="fg"><label class="fl">Discount %</label><input class="fi" type="number" value="38"></div>
+        </div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('editProduct')">Cancel</button><button
+          class="btn btn-primary" onclick="showToast('✅ Product updated!');closeM('editProduct')">💾 Save
+          Changes</button></div>
+    </div>
+  </div>
+
+  <!-- View Order -->
+  <div class="modal-overlay" id="modal-viewOrder">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title" id="voTitle">📦 Order #1 — bansi</div>
+          <div class="mh-sub">SELECT * FROM orders WHERE id=1</div>
+        </div><button class="mc" onclick="closeM('viewOrder')">×</button>
+      </div>
+      <div class="mb">
+        <div
+          style="background:var(--gray-50);border-radius:8px;padding:14px;border:1px solid var(--gray-200);margin-bottom:14px">
+          <div class="dv-row"><span class="dv-key">ID</span><span class="dv-val" id="vId">#1</span></div>
+          <div class="dv-row"><span class="dv-key">Full Name</span><span class="dv-val" id="vName">bansi</span></div>
+          <div class="dv-row"><span class="dv-key">Address</span><span class="dv-val" id="vAddr">leela circal
+              bhavnagar</span></div>
+          <div class="dv-row"><span class="dv-key">City</span><span class="dv-val" id="vCity">Not Specified</span></div>
+          <div class="dv-row"><span class="dv-key">Payment</span><span class="dv-val" id="vPay">COD</span></div>
+          <div class="dv-row"><span class="dv-key">Total Amount</span><span class="dv-val" id="vAmt"
+              style="color:var(--success);font-size:16px;font-weight:800">₹5,098.00</span></div>
+          <div class="dv-row"><span class="dv-key">Order Date</span><span class="dv-val" id="vDate">2026-02-18
+              21:16:21</span></div>
+        </div>
+        <div class="fg"><label class="fl">Update Status</label><select class="fi">
+            <option>⏳ Pending</option>
+            <option>🔄 Processing</option>
+            <option selected>✅ Delivered</option>
+            <option>❌ Cancelled</option>
+          </select></div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('viewOrder')">Close</button><button
+          class="btn btn-primary" onclick="showToast('✅ Status updated!');closeM('viewOrder')">💾 Update</button></div>
+    </div>
+  </div>
+
+  <!-- Edit Order -->
+  <div class="modal-overlay" id="modal-editOrder">
+    <div class="modal">
+      <div class="mh">
+        <div>
+          <div class="mh-title">✏️ Edit Order</div>
+          <div class="mh-sub">UPDATE orders SET ... WHERE id=?</div>
+        </div><button class="mc" onclick="closeM('editOrder')">×</button>
+      </div>
+      <div class="mb">
+        <div class="fr">
+          <div class="fg"><label class="fl">Full Name</label><input class="fi" value="bansi" type="text"></div>
+          <div class="fg"><label class="fl">City</label><input class="fi" value="Bhavnagar" type="text"></div>
+        </div>
+        <div class="fg"><label class="fl">Address</label><input class="fi" value="leela circal bhavnagar" type="text">
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Payment Method</label><select class="fi">
+              <option selected>cod</option>
+              <option>upi</option>
+              <option>card</option>
+            </select></div>
+          <div class="fg"><label class="fl">Total Amount (₹)</label><input class="fi" value="5098.00" type="number">
+          </div>
+        </div>
+      </div>
+      <div class="mf"><button class="btn btn-ghost" onclick="closeM('editOrder')">Cancel</button><button
+          class="btn btn-primary" onclick="showToast('✅ Order updated!');closeM('editOrder')">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">⚡ Done</div>
+
+  <script>
+    let orderData = [];
+    let userData = [];
+    let productData = [];
+
+    // --- FETCH DATA FROM DATABASE ---
+    async function loadDashboardData() {
+      try {
+        console.log('📊 Starting dashboard data load...');
+        
+        // Immediately update stats while loading other data
+        await updateDashboardStats();
+        console.log('✅ Stats loaded immediately');
+        
+        // Load orders
+        const ordersRes = await fetch('api_orders.php?action=list');
+        const ordersJson = await ordersRes.json();
+        if (ordersJson.success) {
+          orderData = ordersJson.data;
+          populateOrdersTable();
+          console.log('✅ Orders loaded:', ordersJson.count);
+        } else {
+          console.warn('Orders load failed:', ordersJson);
+        }
+
+        // Load users
+        const usersRes = await fetch('api_users.php?action=list');
+        const usersJson = await usersRes.json();
+        if (usersJson.success) {
+          userData = usersJson.data;
+          populateUsersTable();
+          console.log('✅ Users loaded:', usersJson.count);
+        } else {
+          console.warn('Users load failed:', usersJson);
+        }
+
+        // Load products
+        const productsRes = await fetch('api_products.php?action=list');
+        const productsJson = await productsRes.json();
+        if (productsJson.success) {
+          productData = productsJson.data;
+          console.log('✅ Products loaded:', productsJson.count);
+        } else {
+          console.warn('Products load failed:', productsJson);
+        }
+
+        // Update stats again after all data loads for any changes
+        await updateDashboardStats();
+      } catch (error) {
+        console.error('❌ Error loading data:', error);
+        // Still try to update stats even if data loading failed
+        setTimeout(() => updateDashboardStats(), 1000);
+      }
+    }
+
+    async function updateDashboardStats() {
+      try {
+        console.log('📈 updateDashboardStats() called...');
+        
+        // Get the stats section
+        const mainStatsSection = document.getElementById('mainStats');
+        if (!mainStatsSection) {
+          console.error('❌ Main stats section not found');
+          return;
+        }
+
+        const statCards = mainStatsSection.querySelectorAll('.sc');
+        console.log('Found stat cards:', statCards.length);
+        
+        if (statCards.length < 5) {
+          console.error('❌ Expected at least 5 stat cards, found:', statCards.length);
+          return;
+        }
+
+        // Initialize with loading state
+        statCards.forEach((card, idx) => {
+          const valDiv = card.querySelector('.sc-val');
+          if (valDiv) valDiv.textContent = 'Loading...';
+        });
+
+        // Fetch all stats in parallel for better performance
+        console.log('🔄 Fetching stats from APIs...');
+        const [ordersStatsRes, usersStatsRes, productsStatsRes] = await Promise.all([
+          fetch('api_orders.php?action=stats').catch(e => ({ ok: false, error: e })),
+          fetch('api_users.php?action=stats').catch(e => ({ ok: false, error: e })),
+          fetch('api_products.php?action=stats').catch(e => ({ ok: false, error: e }))
+        ]);
+
+        // Check response status
+        if (!ordersStatsRes.ok) {
+          console.error('❌ Orders API error:', ordersStatsRes.status || ordersStatsRes.error);
+        }
+        if (!usersStatsRes.ok) {
+          console.error('❌ Users API error:', usersStatsRes.status || usersStatsRes.error);
+        }
+        if (!productsStatsRes.ok) {
+          console.error('❌ Products API error:', productsStatsRes.status || productsStatsRes.error);
+        }
+
+        // Parse responses with error handling
+        let ordersData = { order_count: 0, total_revenue: '0', cities_count: 0, success: false };
+        let usersData = { user_count: 0, success: false };
+        let productsData = { product_count: 0, success: false };
+
+        if (ordersStatsRes.ok) {
+          try {
+            ordersData = await ordersStatsRes.json();
+            console.log('📦 Orders Stats:', ordersData);
+          } catch (e) {
+            console.error('❌ Error parsing orders response:', e);
+          }
+        }
+
+        if (usersStatsRes.ok) {
+          try {
+            usersData = await usersStatsRes.json();
+            console.log('👥 Users Stats:', usersData);
+          } catch (e) {
+            console.error('❌ Error parsing users response:', e);
+          }
+        }
+
+        if (productsStatsRes.ok) {
+          try {
+            productsData = await productsStatsRes.json();
+            console.log('🛒 Products Stats:', productsData);
+          } catch (e) {
+            console.error('❌ Error parsing products response:', e);
+          }
+        }
+
+        // Safely extract values with defaults
+        const orderCount = parseInt(ordersData?.order_count || 0) || 0;
+        const revenueStr = String(ordersData?.total_revenue || '0').replace(/,/g, '');
+        const revenue = parseFloat(revenueStr) || 0;
+        const userCount = parseInt(usersData?.user_count || 0) || 0;
+        const productCount = parseInt(productsData?.product_count || 0) || 0;
+        const citiesCount = parseInt(ordersData?.cities_count || 0) || 0;
+
+        console.log('✅ Parsed values:', {
+          orders: orderCount,
+          revenue: revenue,
+          users: userCount,
+          products: productCount,
+          cities: citiesCount
+        });
+
+        // Update each stat card with proper error checking
+        try {
+          // Total Orders
+          const orderVal = statCards[0].querySelector('.sc-val');
+          if (orderVal) orderVal.textContent = orderCount;
+          const orderChg = statCards[0].querySelector('.sc-chg');
+          if (orderChg) orderChg.innerHTML = '✓ Live from database';
+          
+          // Total Revenue
+          const revenueVal = statCards[1].querySelector('.sc-val');
+          if (revenueVal) {
+            const formattedRevenue = revenue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            revenueVal.textContent = '₹' + formattedRevenue;
+          }
+          const revenueChg = statCards[1].querySelector('.sc-chg');
+          if (revenueChg) revenueChg.innerHTML = '✓ Calculated';
+          
+          // Registered Users
+          const userVal = statCards[2].querySelector('.sc-val');
+          if (userVal) userVal.textContent = userCount;
+          const userChg = statCards[2].querySelector('.sc-chg');
+          if (userChg) userChg.innerHTML = userCount > 0 ? '✓ From users table' : '⚠ No users yet';
+          
+          // Products
+          const prodVal = statCards[3].querySelector('.sc-val');
+          if (prodVal) prodVal.textContent = productCount;
+          const prodChg = statCards[3].querySelector('.sc-chg');
+          if (prodChg) prodChg.innerHTML = '✓ From database';
+          
+          // Cities Served
+          const citiesVal = statCards[4].querySelector('.sc-val');
+          if (citiesVal) citiesVal.textContent = citiesCount;
+          const citiesChg = statCards[4].querySelector('.sc-chg');
+          if (citiesChg) citiesChg.innerHTML = '✓ Live data';
+          
+          console.log('✅ Dashboard stats updated successfully!');
+        } catch (updateError) {
+          console.error('❌ Error updating stat cards:', updateError);
+        }
+      } catch (error) {
+        console.error('❌ Fatal error in updateDashboardStats:', error);
+      }
+    }
+
+    function populateOrdersTable() {
+      const tbody = document.getElementById('ordersBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      const avColors = ['#2563c7', '#f97316', '#16a34a', '#7c3aed', '#dc2626', '#0284c7'];
+
+      orderData.forEach((order, index) => {
+        const paymentBadgeHTML = order.payment_method === 'COD'
+          ? '<span class="pay-cod">COD</span>'
+          : order.payment_method === 'UPI'
+            ? '<span class="pay-upi">UPI</span>'
+            : '<span class="pay-card">CARD</span>';
+
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-status', 'delivered');
+        const initials = order.full_name ? order.full_name.charAt(0).toUpperCase() : 'U';
+        const color = avColors[index % avColors.length];
+
+        tr.innerHTML = `
+      <td><input type="checkbox"></td>
+      <td><span class="oid">#${order.id}</span></td>
+      <td><div class="uc"><div class="uav" style="background:${color}">${initials}</div><div><div class="un">${order.full_name}</div></div></div></td>
+      <td style="max-width:130px;font-size:11px;color:var(--gray-600)">${order.address}</td>
+      <td>${order.city}</td>
+      <td>${paymentBadgeHTML}</td>
+      <td><span class="amt">₹${parseFloat(order.total_amount).toFixed(2)}</span></td>
+      <td style="font-size:10px;color:var(--gray-500);white-space:nowrap">${order.order_date}</td>
+      <td><span class="badge b-success">✅ Delivered</span></td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-success btn-sm" onclick="openM('viewOrder',${order.id})">👁</button>
+        <button class="btn btn-outline btn-sm" onclick="openM('editOrder',${order.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="delRow(this)">🗑</button>
+      </div></td>
+    `;
+        tbody.appendChild(tr);
+      });
+
+      // Update order count
+      const orderCount = document.getElementById('orderCount');
+      if (orderCount) {
+        orderCount.textContent = orderData.length;
+      }
+    }
+
+    function populateUsersTable() {
+      const tbody = document.getElementById('usersBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      const avColors = ['#2563c7', '#f97316', '#16a34a', '#7c3aed', '#dc2626', '#0284c7'];
+
+      userData.forEach((user, index) => {
+        const tr = document.createElement('tr');
+        const initials = user.fullname ? user.fullname.charAt(0).toUpperCase() : 'U';
+        const color = avColors[index % avColors.length];
+        const createdDate = new Date(user.created_at).toISOString().split('T')[0];
+
+        tr.innerHTML = `
+      <td><input type="checkbox"></td>
+      <td><span class="oid">#${user.id}</span></td>
+      <td><div class="uc"><div class="uav" style="background:${color}">${initials}</div><div><div class="un">${user.fullname}</div></div></div></td>
+      <td style="font-size:11px;color:var(--gray-500)">${user.email}</td>
+      <td>${user.phone || '—'}</td>
+      <td style="color:var(--gray-400)">••••••••</td>
+      <td><span class="badge b-gray">user</span></td>
+      <td style="font-size:11px;color:var(--gray-500)">${createdDate}</td>
+      <td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">✏️</button><button class="btn btn-danger btn-sm" onclick="delRow(this)">🗑</button></div></td>
+    `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // --- Admin login helpers ---
+    const ADMIN_CREDENTIALS = { user: 'admin', pass: 'admin123' };
+    function isAdminLogged() { return sessionStorage.getItem('isAdmin') === '1'; }
+    function doAdminLogin() {
+      const u = (document.getElementById('adminUser') || {}).value || '';
+      const p = (document.getElementById('adminPass') || {}).value || '';
+      const e = document.getElementById('adminLoginErr');
+      if (u === ADMIN_CREDENTIALS.user && p === ADMIN_CREDENTIALS.pass) {
+        sessionStorage.setItem('isAdmin', '1');
+        if (e) e.style.display = 'none';
+        closeM('adminLogin');
+        showToast('✅ Welcome, Admin');
+        console.log('🔑 Admin logged in, loading dashboard...');
+        
+        // Load dashboard data immediately
+        loadDashboardData();
+        
+        // Add multiple retry attempts to ensure stats load
+        let retryCount = 0;
+        const maxRetries = 3;
+        const statsCheckInterval = setInterval(() => {
+          const statVal = document.querySelector('#mainStats .sc-val');
+          const isLoading = statVal && statVal.textContent.includes('Loading');
+          
+          if (isLoading && retryCount < maxRetries) {
+            console.log(`⚠️ Stats still loading, retry ${retryCount + 1}/${maxRetries}...`);
+            retryCount++;
+            updateDashboardStats();
+          } else if (!isLoading) {
+            console.log('✅ Stats loaded successfully!');
+            clearInterval(statsCheckInterval);
+          } else if (retryCount >= maxRetries) {
+            console.warn('⚠️ Stats failed to load after retries');
+            clearInterval(statsCheckInterval);
+          }
+        }, 1500);
+      } else {
+        if (e) { e.textContent = 'Invalid username or password'; e.style.display = 'block'; }
+        showToast('❌ Login failed');
+      }
+    }
+    function adminLogout() {
+      sessionStorage.removeItem('isAdmin');
+      showToast('Logged out — please sign in');
+      setTimeout(() => openM('adminLogin'), 600);
+    }
+
+
+    const pages = {
+      dashboard: { title: 'Dashboard', crumb: 'overview', actions: `<button class="btn btn-ghost btn-sm">📅 Feb 2026</button><button class="btn btn-orange btn-sm" onclick="openM('addOrder')">+ New Order</button>` },
+      orders: { title: 'Orders Management', crumb: 'orders', actions: `<button class="btn btn-ghost btn-sm">⬇ Export CSV</button><button class="btn btn-primary btn-sm" onclick="openM('addOrder')">+ New Order</button>` },
+      users: { title: 'Users Management', crumb: 'users', actions: `<button class="btn btn-ghost btn-sm">⬇ Export</button><button class="btn btn-primary btn-sm" onclick="openM('addUser')">+ Add User</button>` },
+      analytics: { title: 'Analytics', crumb: 'analytics', actions: '' },
+      products: { title: 'Products', crumb: 'products', actions: `<button class="btn btn-ghost btn-sm">⬇ Export</button><button class="btn btn-primary btn-sm" onclick="openM('addProduct')">+ Add Product</button>` },
+      categories: { title: 'Categories', crumb: 'categories', actions: '' },
+      brands: { title: 'Brands', crumb: 'brands', actions: '' },
+      payments: { title: 'Payments', crumb: 'payments', actions: '' },
+      settings: { title: 'Settings', crumb: 'settings', actions: `<button class="btn btn-primary btn-sm" onclick="showToast('✅ Settings saved!')">💾 Save All</button>` },
+      database: { title: 'Database Info', crumb: 'database', actions: '' }
+    };
+
+    function showSec(name, el) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.navlink').forEach(n => n.classList.remove('active'));
+      document.getElementById('sec-' + name).classList.add('active');
+      el.classList.add('active');
+      const p = pages[name] || {};
+      document.getElementById('ptitle').textContent = p.title || name;
+      document.getElementById('pcrumb').textContent = p.crumb || name;
+      document.getElementById('pactions').innerHTML = p.actions || '';
+      
+      // Refresh dashboard stats when dashboard section is shown
+      if (name === 'dashboard') {
+        updateDashboardStats();
+      }
+    }
+
+    function openM(id, ordId) {
+      if (id === 'viewOrder' && ordId) {
+        const o = orderData.find(x => x.id === ordId) || orderData[0];
+        if (o) {
+          document.getElementById('voTitle').textContent = `📦 Order #${o.id} — ${o.full_name}`;
+          document.getElementById('vId').textContent = '#' + o.id;
+          document.getElementById('vName').textContent = o.full_name;
+          document.getElementById('vAddr').textContent = o.address;
+          document.getElementById('vCity').textContent = o.city;
+          document.getElementById('vPay').textContent = o.payment_method;
+          document.getElementById('vAmt').textContent = '₹' + parseFloat(o.total_amount).toFixed(2);
+          document.getElementById('vDate').textContent = o.order_date;
+        }
+      }
+      document.getElementById('modal-' + id).classList.add('open');
+    }
+    function closeM(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerHTML = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    let oc = 2;
+    const avColors = ['#2563c7', '#f97316', '#16a34a', '#7c3aed', '#dc2626', '#0284c7'];
+    function addOrder() {
+      const name = document.getElementById('nof').value || 'New Customer';
+      const city = document.getElementById('noc').value || 'Not Specified';
+      const addr = document.getElementById('noa').value || 'Address';
+      const pay = document.getElementById('nop').value;
+      const amt = document.getElementById('noamt').value || '0';
+
+      // Send to database
+      fetch('api_orders.php?action=add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `name=${encodeURIComponent(name)}&address=${encodeURIComponent(addr)}&city=${encodeURIComponent(city)}&payment=${encodeURIComponent(pay)}&amount=${encodeURIComponent(amt)}`
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          closeM('addOrder');
+          loadDashboardData();
+          showToast(`✅ Order added!`);
+        }
+      }).catch(err => {
+        console.error('Error:', err);
+        showToast('❌ Error adding order');
+      });
+    }
+
+    let uc2 = 0;
+    function addUser() {
+      const name = document.getElementById('nuf').value || 'New User';
+      const email = document.getElementById('nue').value || 'user@email.com';
+      const role = document.getElementById('nur').value;
+      uc2++;
+      const c = avColors[uc2 % avColors.length];
+      const tbody = document.getElementById('usersBody');
+      if (uc2 === 1) tbody.innerHTML = '';
+      const now = new Date().toISOString().split('T')[0];
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><input type="checkbox"></td><td><span class="oid">#${uc2}</span></td><td><div class="uc"><div class="uav" style="background:${c}">${name[0].toUpperCase()}</div><div><div class="un">${name}</div></div></div></td><td style="font-size:11px;color:var(--gray-500)">${email}</td><td>—</td><td style="color:var(--gray-400)">••••••••</td><td><span class="badge ${role === 'admin' ? 'b-purple' : 'b-gray'}">${role}</span></td><td style="font-size:11px;color:var(--gray-500)">${now}</td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">✏️</button><button class="btn btn-danger btn-sm" onclick="delRow(this)">🗑</button></div></td>`;
+      tbody.appendChild(tr);
+      closeM('addUser');
+      showToast(`✅ User "${name}" registered!`);
+    }
+
+    function delRow(btn) {
+      if (confirm('Delete this record permanently?')) {
+        const tr = btn.closest('tr');
+        tr.style.opacity = '0'; tr.style.transition = 'opacity 0.3s';
+        setTimeout(() => tr.remove(), 300);
+        showToast('🗑 Record deleted!');
+      }
+    }
+
+    function filterOrders(status, el) {
+      document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('#ordersBody tr').forEach(r => {
+        r.style.display = (status === 'all' || r.dataset.status === status) ? '' : 'none';
+      });
+    }
+    function filterCat(cat, el) {
+      document.querySelectorAll('#sec-products .tabs .tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('#productBody tr').forEach(r => {
+        r.style.display = (cat === 'all' || r.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+    function toggleAll(cb) { document.querySelectorAll('#ordersBody input[type=checkbox]').forEach(c => c.checked = cb.checked); }
+
+    // Refresh dashboard stats function (can be called manually)
+    async function refreshDashboardStats() {
+      console.log('🔄 Manual stats refresh triggered...');
+      showToast('🔄 Refreshing statistics...');
+      await updateDashboardStats();
+      showToast('✅ Statistics refreshed!');
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+      // Animate progress bars
+      setTimeout(() => {
+        document.querySelectorAll('.pr-bar').forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => b.style.width = w, 200); });
+      }, 400);
+
+      // Always require admin login when opening the page
+      // clear any previous session flag and show login modal
+      try { sessionStorage.removeItem('isAdmin'); } catch (e) { }
+      setTimeout(() => openM('adminLogin'), 150);
+    });
+  </script>
+</body>
+
+</html>
